@@ -49,6 +49,16 @@ const App = () => {
     }
   };
 
+
+  const partiallyUpdateTask = async (taskId, updatedFields) => {
+    try {
+      await axios.patch(`${API_BASE_URL}/tasks/${taskId}`, updatedFields);
+      fetchTasks(); // Refresh task list after partially updating a task
+    } catch (error) {
+      console.error('Error partially updating task:', error);
+    }
+  };
+  
   const deleteTask = async (taskId) => {
     try {
       await axios.delete(`${API_BASE_URL}/tasks/${taskId}`);
@@ -84,6 +94,9 @@ const App = () => {
             {task.title} - {task.description}
             <button onClick={() => updateTask(task.id, { title: 'Updated Title', description: 'Updated Description' })}>
               Update
+            </button>
+            <button onClick={() => partiallyUpdateTask (task.id, { description: 'Updated (pached) Description' })}>
+              pached
             </button>
             <button onClick={() => deleteTask(task.id)}>Delete</button>
           </li>
